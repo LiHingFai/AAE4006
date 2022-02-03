@@ -56,4 +56,5 @@ title('Spacecraft')
 xlabel('East')
 ylabel('North')
 zlabel('-Down')
+view(32,47)
 hold on
