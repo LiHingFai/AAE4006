@@ -1,7 +1,5 @@
-# AAE4006
-This is the GitHub repository for the subject AAE4006.
+# % Implementing the coordination system transformation
 
-You will find all the codes for tasks and laboratory here. 
-
-## 2022.01.10
-Task 1 has been updated
+## 2022.01.17 
+#### The updated "Coordinate_Systems_LV.slx" is runnable on MATLAB 2018a and newer versions
+#### If you have downloaded the previous "Coordinate_Systems.slx" and find it not possible to run on lab computers, please check this one
