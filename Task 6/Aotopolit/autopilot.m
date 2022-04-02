@@ -184,7 +184,11 @@ end
 %   - regulate pitch using elevator
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function delta_e = pitch_hold(theta_c, theta, q, P)
-
+    error = theta_c-theta;
+    differentiator = q;
+    kp = P.kp_theta;
+    kd = P.kd_theta;
+    delta_e = sat(kp*error-kd*differentiator,P.delta_a_max,-P.delta_a_max);
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -194,7 +198,12 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function  theta_c = altitude_hold(h_c, h, flag, P)
     persistent integratorh
-
+    if flag == 1
+        integratorh = 0;
+    end
+    error = h_c - h;
+    integratorh = integratorh+P.Ts*error;
+    theta _c = sat(P.kp_h*error+P.ki_h*integratorh,P.theta_max,-P.theta_max);
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -204,7 +213,12 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function theta_c = airspeed_with_pitch_hold(Va_c, Va, flag, P)
     persistent integratorV2
-
+    if flag == 1
+        integratorV2 = 0;
+    end
+    error = Va_c - Va;
+    integratorV2 = integratorV2+P.Ts*error;
+    theta_c = sat(P.kp_Va*error+P.ki_Va*integratorV2,P.theta_max,-P.theta_max);
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -214,7 +228,12 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function delta_t = airspeed_with_throttle_hold(Va_c, Va, flag, P)
     persistent integratorV
-
+    if flag == 1
+        integratorV = 0;
+    end
+    error = Va_c - Va;
+    integratorV = integratorV+P.Ts*error;
+    delta_t = sat(P.kp_Va*error+P.ki_Va*integratorV,P.delta_t_max,-P.delta_t_max);
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
